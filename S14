@@ -1,0 +1,347 @@
+Slip 14
+A)Construct an Android app that toggles a light bulb on and off when the user clicks on toggle button
+Activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".MainActivity">
+<ToggleButton
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:id="@+id/toggle"
+android:textOff="power off"
+android:textOn="power on"
+android:drawableStart="@drawable/selector"
+android:layout_marginTop="40dp"/>
+<ImageView
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:id="@+id/imageView"
+android:layout_marginTop="20dp"/>
+</LinearLayout>
+Selector.xml
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:state_checked="true" android:drawable="@drawable/img_1"/>
+<item android:state_checked="false" android:drawable="@drawable/img"/>
+</selector>
+MainActivity.java
+package com.example.mybulb;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ToggleButton;
+public class MainActivity extends AppCompatActivity {
+ToggleButton toggleButton;
+ImageView imageView;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+toggleButton=findViewById(R.id.toggle);
+imageView=findViewById(R.id.imageView);
+imageView.setImageDrawable(getResources().getDrawable(R.drawable.img));
+toggleButton.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View view) {
+if (toggleButton.isChecked()) {
+imageView.setImageDrawable(getResources().getDrawable(R.drawable.img));
+}
+else {
+imageView.setImageDrawable(getResources().getDrawable(R.drawable.img_1));
+}
+}
+});
+}
+}
+
+
+
+B) Construct an Android application to accept a number and calculate Armstrong and Perfect number of a given number using Menu.
+Activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:gravity="center"
+tools:context=".MainActivity">
+<EditText
+android:layout_marginTop="200dp"
+android:layout_marginLeft="50dp"
+android:layout_width="200dp"
+android:layout_height="50dp"
+android:id="@+id/et"
+android:hint="Enter a number"/>
+</LinearLayout>
+MainActivity.java
+package com.example.myarmstrongperfect;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.Toast;
+public class MainActivity extends AppCompatActivity {
+int num;
+String value;
+EditText et;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+}
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+//return super.onCreateOptionsMenu(menu);
+MenuInflater mi = getMenuInflater();
+mi.inflate(R.menu.mymenu, menu);
+return true;
+}
+@Override
+public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//return super.onOptionsItemSelected(item);
+et=(EditText) findViewById(R.id.et);
+value= et.getText().toString();
+if(!value.isEmpty()){
+try{
+num = Integer.parseInt(value);
+int id;
+id= item.getItemId();
+int t=num;
+switch(id){
+case R.id.perfect:int ans=0;
+int div=1;
+while(div<t){
+if (t%div==0)
+ans=ans + div;
+div++;
+}
+if(ans==num)
+Toast.makeText(getApplicationContext(), "Number "+ num+ " is
+perfect", Toast.LENGTH_SHORT).show();
+else
+Toast.makeText(getApplicationContext(), "Number "+ num+ " is
+not perfect", Toast.LENGTH_SHORT).show();
+break;
+case R.id.arms:ans=0;
+while(t>0){
+int rem = t%10;
+ans += Math.pow(rem, 3);
+t=t/10;
+}
+if(ans==num)
+Toast.makeText(this, "Number "+ num + " is an armstrong
+number", Toast.LENGTH_SHORT).show();
+else
+Toast.makeText(this, "Number "+ num + " is not an armstrong
+number", Toast.LENGTH_SHORT).show();
+break;
+}
+}
+catch (NumberFormatException ne){
+Log.e("Error", ""+ne.getMessage());
+}
+}
+return true;
+}
+}
+Mymenu.xml
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:id="@+id/perfect"
+android:title="Perfect" />
+<item android:id="@+id/arms"
+android:title="Armstrong" />
+</menu>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+A) Write a C program to create an unnamed pipe. Write following three messages to pipe and display it.
+Message1 = “Hello World”
+Message2 = “Hello SPPU”
+Message3 = “Linux is Funny”
+#include<stdio.h>
+#include<unistd.h>
+int main() {
+int pipefds[2];
+int returnstatus;
+char writemessages[3][20]={"Hello World", "Hello SPPU","Linux is Funny"};
+char readmessage[20];
+returnstatus = pipe(pipefds);
+if (returnstatus == -1) {
+printf("Unable to create pipe\n");
+return 1;
+}
+int child = fork();
+if(child==0){
+printf("Child is Writing to pipe - Message 1 is %s\n", writemessages[0]);
+write(pipefds[1], writemessages[0], sizeof(writemessages[0]));
+printf("Child is Writing to pipe - Message 2 is %s\n", writemessages[1]);
+write(pipefds[1], writemessages[1], sizeof(writemessages[1]));
+printf("Child is Writing to pipe - Message 3 is %s\n", writemessages[2]);
+write(pipefds[1], writemessages[2], sizeof(writemessages[2]));
+}
+else
+{
+read(pipefds[0], readmessage, sizeof(readmessage));
+printf("Parent Process is Reading from pipe – Message 1 is %s\n",
+readmessage);
+read(pipefds[0], readmessage, sizeof(readmessage));
+printf("Parent Process is Reading from pipe – Message 2 is %s\n",
+readmessage);
+read(pipefds[0], readmessage, sizeof(readmessage));
+printf("Parent Process is Reading from pipe – Message 3 is %s\n",
+readmessage);
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+B) Write a C program that behaves like a shell (command interpreter). It has its own prompt say “NewShell$”.Any normal shell command is executed from your shell by starting a child process to execute the system program corresponding to the command. It should additionally interpret the following command.
+i) search f <pattern><filename> - search first occurrence of pattern in filename
+ii) search c <pattern><filename> - count no. of occurrences of pattern in filename
+iii) search a <pattern><filename> - search all occurrences of pattern in filename
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <string.h> 
+#include <unistd.h> 
+#include <sys/wait.h> 
+#define MAX_COMMAND_LENGTH 1024 
+#define MAX_ARGUMENTS 64 
+void search_file(const char* pattern, const char* filename, int count_only) { 
+FILE* file = fopen(filename, "r"); 
+if (file == NULL) { 
+printf("Error: could not open file '%s'\n", filename); 
+return; 
+} 
+int match_count = 0; 
+char line[MAX_COMMAND_LENGTH]; 
+while (fgets(line, sizeof(line), file)) { 
+char* match = strstr(line, pattern); 
+while (match != NULL) { 
+match_count++; 
+if (!count_only) { 
+printf("%s", line); 
+} 
+match = strstr(match + 1, pattern); 
+} 
+} 
+if (count_only) { 
+printf("Found %d occurrences of '%s' in file '%s'\n", match_count, pattern, filename); 
+} else if (match_count == 0) { 
+printf("Pattern not found in file '%s'\n", filename); 
+} 
+fclose(file); 
+} 
+int main() { 
+char command[MAX_COMMAND_LENGTH]; 
+while (1) { 
+printf("NewShell$ "); 
+if (fgets(command, sizeof(command), stdin) == NULL) { 
+break; // end of input 
+} 
+// remove trailing newline from command 
+char* newline = strchr(command, '\n'); 
+if (newline != NULL) { 
+*newline = '\0'; 
+} 
+// tokenize command into arguments 
+char* arguments[MAX_ARGUMENTS]; 
+char* argument = strtok(command, " "); 
+int argument_count = 0; 
+while (argument != NULL) { 
+arguments[argument_count++] = argument; 
+argument = strtok(NULL, " "); 
+} 
+arguments[argument_count] = NULL; 
+if (argument_count == 0) { 
+continue; // empty command 
+} 
+if (strcmp(arguments[0], "search") == 0 && argument_count >= 3) { 
+if (strcmp(arguments[1], "f") == 0) { 
+search_file(arguments[2], arguments[3], 0); 
+} else if (strcmp(arguments[1], "c") == 0) { 
+search_file(arguments[2], arguments[3], 1); 
+} else if (strcmp(arguments[1], "a") == 0) { 
+search_file(arguments[2], arguments[3], 0); 
+} else { 
+printf("Error: invalid search command\n"); 
+} 
+} else { 
+pid_t pid = fork(); 
+if (pid == -1) { 
+printf("Error: could not fork process\n"); 
+continue; 
+} else if (pid == 0) { 
+// child process 
+execvp(arguments[0], arguments); 
+printf("Error: could not execute command '%s'\n", arguments[0]); 
+exit(EXIT_FAILURE); 
+} else { 
+// parent process 
+int status; 
+waitpid(pid, &status, 0); 
+} 
+} 
+} 
+return 0; 
+} 
+
+

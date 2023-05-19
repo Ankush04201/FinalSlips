@@ -1,0 +1,384 @@
+Slip 6
+A) Write an Android code to complete the following Array/List operations
+Activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+<TableRow
+android:orientation="horizontal">
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="100dp"
+android:text="List1" />
+<EditText
+android:layout_height="50dp"
+android:layout_width="100dp"
+android:id="@+id/l1"/>
+</TableRow>
+<TableRow
+android:orientation="horizontal">
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="100dp"
+android:text="List2" />
+<EditText
+android:layout_height="50dp"
+android:layout_width="100dp"
+android:id="@+id/l2"/>
+</TableRow>
+<TableRow
+android:orientation="vertical">
+<RadioGroup
+android:id="@+id/rg"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content">
+<RadioButton
+android:id="@+id/rd1"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Union" />
+<RadioButton
+android:id="@+id/rd2"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Intersection" />
+</RadioGroup>
+<Button
+android:layout_height="wrap_content"
+android:layout_width="wrap_content"
+android:text="SHOW"
+android:id="@+id/btn"/>
+</TableRow>
+</TableLayout>
+MainActivity.java
+package com.example.myunionintersection;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.Collections;
+public class MainActivity extends AppCompatActivity {
+EditText list1, list2;
+String str1="", str2="";
+RadioGroup rg;
+RadioButton rd1, rd2;
+Button btn;
+ArrayList<String> l1, l2;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+rg = (RadioGroup) findViewById(R.id.rg);
+btn = (Button) findViewById(R.id.btn);
+btn.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View view) {
+list1 = (EditText) findViewById(R.id.l1);
+list2 =(EditText) findViewById(R.id.l2);
+str1 = list1.getText().toString();
+str2 = list2.getText().toString();
+//String[] strl1 = str1.split(",");
+//String[] strl2 = str2.split(",");
+l1 = new ArrayList<String>(Collections.singleton(str1));
+l2 = new ArrayList<String>(Collections.singleton(str2));
+int id = rg.getCheckedRadioButtonId();
+switch(id){
+case R.id.rd1:l1.addAll(l2);
+Toast.makeText(MainActivity.this, "Union=" + l1.toString(),
+Toast.LENGTH_SHORT).show();
+break;
+case R.id.rd2:l1.retainAll(l2);
+Toast.makeText(MainActivity.this, "Intersection=" + l1.toString(),
+Toast.LENGTH_SHORT).show();
+break;
+default:
+Toast.makeText(MainActivity.this, "Please select radio button",
+Toast.LENGTH_SHORT).show();
+}
+}
+});
+}
+}
+
+
+
+
+
+
+
+
+
+
+B) Java Android Program to demonstrate login form with validation.
+ActivityMain.xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/teal_700"
+tools:context=".MainActivity">
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:layout_marginLeft="16dp"
+android:layout_marginRight="16dp"
+android:layout_centerInParent="true">
+<EditText
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:hint="Enter Email"
+android:id="@+id/et1"/>
+<EditText
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:hint="Enter Password"
+android:id="@+id/et2"
+android:inputType="textPassword"
+/>
+<Button
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="Login"
+android:background="#3f76ff"
+android:textColor="#fff"
+android:id="@+id/b"/>
+<TextView
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="Not a member? Sign in"
+android:textAlignment="center"
+android:textSize="30dp"/>
+</LinearLayout>
+</RelativeLayout>
+MainActivity.java
+package com.example.myassignment_1;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationStyle;
+public class MainActivity extends AppCompatActivity {
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+EditText et1 = (EditText) findViewById(R.id.et1);
+EditText et2 = (EditText) findViewById(R.id.et2);
+Button b = (Button) findViewById(R.id.b);
+AwesomeValidation av = new AwesomeValidation(ValidationStyle.BASIC);
+b.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View view) {
+{
+String e1 = et1.getText().toString();
+String e2 = et1.getText().toString();
+av.addValidation(et1, "^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$",
+"invalid");
+av.addValidation(et2, "\"[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$\"",
+"wrong pass");
+if(e1.equals("")||e2.equals(""))
+{
+Toast toast = Toast.makeText(getApplicationContext(), "Invalid emailid ",
+Toast.LENGTH_SHORT);
+toast.setMargin(50, 50);
+toast.show();
+}
+else
+{
+if (et1.equals("abc@gmail.com")) {
+if (et2.equals("abc12356")) {
+av.validate();
+{
+Toast toast = Toast.makeText(getApplicationContext(), "Invalid
+pass ", Toast.LENGTH_SHORT);
+toast.setMargin(50, 50);
+toast.show();
+}
+}
+}
+}
+}
+}
+}
+);
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+A) Write a C program to map a given file in memory and display the contain of mapped file in reverse
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+int main(int argc, char *argv[]) {
+    int fd;
+    struct stat sb;
+    char *file_contents, *p;
+    off_t offset;
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
+    fd = open(argv[1], O_RDONLY);
+    if (fd == -1) {
+        perror("open");
+        exit(EXIT_FAILURE);
+    }
+    if (fstat(fd, &sb) == -1) {
+        perror("fstat");
+        exit(EXIT_FAILURE);
+    }
+    file_contents = mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+    if (file_contents == MAP_FAILED) {
+        perror("mmap");
+        exit(EXIT_FAILURE);
+    }
+    close(fd);
+    for (p = file_contents + sb.st_size - 1; p >= file_contents; p--) {
+        putchar(*p);
+    }
+    if (munmap(file_contents, sb.st_size) == -1) {
+        perror("munmap");
+        exit(EXIT_FAILURE);
+    }
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+B) Write a C program that behaves like a shell (command interpreter). It has its own prompt say
+“NewShell$”. Any normal shell command is executed from your shell by starting a child process to
+execute the system program corresponding to the command. It should additionally interpret the
+following command.
+i) list f<dirname> - print name of all files in directory
+ii) list n <dirname> - print number of all entries
+iii) list i<dirname> - print name and inode of all files
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <string.h> 
+#include <unistd.h> 
+#include <dirent.h> 
+#include <sys/types.h> 
+#include <sys/stat.h> 
+#include <sys/wait.h> 
+#define MAX_COMMAND_LENGTH 100 
+#define MAX_ARGUMENTS 10 
+int main() { 
+char command[MAX_COMMAND_LENGTH]; 
+char *arguments[MAX_ARGUMENTS]; 
+char *token; 
+char *prompt = "NewShell$ "; 
+int num_arguments; 
+DIR *dir; 
+struct dirent *entry; 
+struct stat filestat; 
+while (1) { 
+printf("%s", prompt); 
+fgets(command, MAX_COMMAND_LENGTH, stdin); 
+num_arguments = 0; 
+token = strtok(command, " \n"); 
+while (token != NULL && num_arguments < MAX_ARGUMENTS) { 
+arguments[num_arguments++] = token; 
+token = strtok(NULL, " \n"); 
+} 
+if (num_arguments == 0) { 
+continue; 
+} 
+if (strcmp(arguments[0], "list") == 0) { 
+if (num_arguments != 3) { 
+printf("Usage: list [f|n|i] <dirname>\n"); 
+continue; 
+} 
+dir = opendir(arguments[2]); 
+if (dir == NULL) { 
+printf("Could not open directory %s\n", arguments[2]); 
+continue; 
+} 
+while ((entry = readdir(dir)) != NULL) { 
+char filepath[256]; 
+sprintf(filepath, "%s/%s", arguments[2], entry->d_name); 
+if (strcmp(arguments[1], "f") == 0) { 
+printf("%s\n", entry->d_name); 
+} else if (strcmp(arguments[1], "n") == 0) { 
+printf("%s\n", entry->d_name); 
+} else if (strcmp(arguments[1], "i") == 0) { 
+if (stat(filepath, &filestat) == -1) { 
+printf("Could not get file information for %s\n", filepath); 
+continue; 
+} 
+printf("%s %d\n", entry->d_name, (int)filestat.st_ino); 
+} 
+} 
+closedir(dir); 
+} else { 
+pid_t pid = fork(); 
+if (pid == -1) { 
+printf("Error forking child process\n"); 
+continue; 
+} else if (pid == 0) { 
+execvp(arguments[0], arguments); 
+printf("Command not found: %s\n", arguments[0]); 
+exit(1); 
+} else { 
+wait(NULL); 
+} 
+} 
+} 
+return 0; 
+} 
+
+
+
+

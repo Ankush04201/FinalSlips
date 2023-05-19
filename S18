@@ -1,0 +1,195 @@
+Slip 18
+A) Write an Android Program to Demonstrate Date Picker Dialog in Android
+Activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".MainActivity">
+<DatePicker
+android:id="@+id/dp"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content" />
+<Button
+android:id="@+id/b"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="click date"
+android:onClick="myclick"/>
+</LinearLayout>
+MainActivity.java
+package com.example.datepicker;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.Toast;
+public class MainActivity extends AppCompatActivity {
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+DatePicker dp=(DatePicker) findViewById(R.id.dp);
+String d=dp.getDayOfMonth()+" "+dp.getMonth()+" "+dp.getYear();
+Toast.makeText(getApplicationContext(), d,
+Toast.LENGTH_LONG).show();
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+B) Write a PhoneGap Application to display Digital Bio Data using HTML5.
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Digital Bio Data</title>
+</head>
+<body>
+    <h1>Digital Bio Data</h1>
+    <p>Name: John Doe</p>
+    <p>Age: 30</p>
+    <p>Gender: Male</p>
+    <p>Height: 6'0"</p>
+    <p>Weight: 180 lbs</p>
+    <p>Blood Type: O+</p>
+    <!-- PhoneGap scripts -->
+    <script src="phonegap.js"></script>
+    <script src="cordova.js"></script>
+    <script>
+        // PhoneGap initialization
+        document.addEventListener("deviceready", onDeviceReady, false);
+        function onDeviceReady() {
+            console.log("PhoneGap ready!");
+        }
+    </script>
+</body>
+</html>
+
+
+
+A) Write a C program to display the last access and modified time of a given file.
+#include <stdio.h>
+#include <sys/stat.h>
+#include <time.h>
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        printf("Usage: %s <filename>\n", argv[0]);
+        return 1;
+    }
+    struct stat file_stat;
+    if (stat(argv[1], &file_stat) < 0) {
+        printf("Failed to get file stats for %s\n", argv[1]);
+        return 1;
+    }
+    printf("Last accessed time: %s", ctime(&file_stat.st_atime));
+    printf("Last modified time: %s", ctime(&file_stat.st_mtime));
+    
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+B) Write a C program to implement the following unix/linux command (use fork, pipe and exec system call). Your program should block the signal Ctrl-C and Ctrl-\ signal during the execution.
+ls –l | wc –l
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <unistd.h> 
+#include <sys/wait.h> 
+#include <signal.h> 
+int main() { 
+int fd[2]; 
+pid_t pid; 
+// block SIGINT and SIGQUIT signals 
+sigset_t mask; 
+sigemptyset(&mask); 
+sigaddset(&mask, SIGINT); 
+sigaddset(&mask, SIGQUIT); 
+sigprocmask(SIG_BLOCK, &mask, NULL); 
+// create pipe 
+if (pipe(fd) == -1) { 
+perror("pipe"); 
+exit(EXIT_FAILURE); 
+} 
+// fork child process 
+pid = fork(); 
+if (pid == -1) { 
+perror("fork"); 
+exit(EXIT_FAILURE); 
+} 
+if (pid == 0) { // child process 
+// redirect stdout to pipe write end 
+dup2(fd[1], STDOUT_FILENO); 
+// close pipe read and write ends 
+close(fd[0]); 
+close(fd[1]); 
+// execute ls -l command 
+execl("/bin/ls", "ls", "-l", NULL); 
+perror("execl"); 
+exit(EXIT_FAILURE); 
+} else { // parent process 
+// fork another child process 
+pid_t pid2 = fork(); 
+if (pid2 == -1) { 
+perror("fork"); 
+exit(EXIT_FAILURE); 
+} 
+if (pid2 == 0) { // child process 
+// redirect stdin to pipe read end 
+dup2(fd[0], STDIN_FILENO); 
+// close pipe read and write ends 
+close(fd[0]); 
+close(fd[1]); 
+// execute wc -l command 
+execl("/usr/bin/wc", "wc", "-l", NULL); 
+perror("execl"); 
+exit(EXIT_FAILURE); 
+} else { // parent process 
+// close pipe read and write ends 
+close(fd[0]); 
+close(fd[1]); 
+// wait for child processes to finish 
+waitpid(pid, NULL, 0); 
+waitpid(pid2, NULL, 0); 
+} 
+} 
+// unblock SIGINT and SIGQUIT signals 
+sigprocmask(SIG_UNBLOCK, &mask, NULL); 
+return 0; 
+} 
+
+

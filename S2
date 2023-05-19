@@ -1,0 +1,186 @@
+Slip 2
+A) Create an Android Application that will change color of the screen and change the font size of text view using xml.
+Activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".MainActivity">
+<TextView
+android:id="@+id/tv"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="Hello World!"
+android:textSize="50dp"/>
+<Button
+android:id="@+id/b"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="Change Color"/>
+</LinearLayout>
+MainActivity.java
+package com.example.mychange_color;
+import androidx.appcompat.app.AppCompatActivity;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+public class MainActivity extends AppCompatActivity {
+TextView tv;
+Button b1;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+tv=(TextView)findViewById(R.id.tv);
+b1=(Button)findViewById(R.id.b);
+b1.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+tv.setTextSize(20);
+changecolor(Color.RED);
+}
+});
+}
+public void changecolor(int c)
+{
+View v=this.getWindow().getDecorView();
+v.setBackgroundColor(c);
+}
+}
+
+
+
+
+
+
+
+
+
+
+B) Write an IOS application to implement UI elements like Pickers
+import UIKit
+class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+    let data = ["Option 1", "Option 2", "Option 3"]
+    @IBOutlet weak var pickerView: UIPickerView!
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        pickerView.delegate = self
+        pickerView.dataSource = self
+    }
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return data.count
+    }
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return data[row]
+    }
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        print("Selected: \(data[row])")
+    }
+}
+
+
+
+
+
+
+
+A) Write a C program that a string as an argument and return all the files that begins with that name in the current directory. For example > ./a.out foo will return all file names that begins with foo.
+#include <dirent.h>
+#include <stdio.h>
+#include <string.h>
+int main(int argc, char *argv[]) {
+  DIR *dir;
+  struct dirent *entry;
+  char *prefix;
+  int len;
+  if (argc != 2) {
+    printf("Usage: %s <prefix>\n", argv[0]);
+    return 1;
+  }
+  prefix = argv[1];
+  len = strlen(prefix);
+  dir = opendir(".");
+  if (dir == NULL) {
+    printf("Error opening directory.\n");
+    return 1;
+  }
+  while ((entry = readdir(dir)) != NULL) {
+    if (strncmp(entry->d_name, prefix, len) == 0) {
+      printf("%s\n", entry->d_name);
+    }
+  }
+  closedir(dir);
+  return 0;
+}
+
+
+
+B) Write a C program to demonstrates the different behavior that can be seen with automatic, global, register, static and volatile variables (Use setjmp() and longjmp() system call).
+#include<sys/types.h>
+#include<sys/wait.h>
+#include<unistd.h>
+#include<time.h>
+#include<sys/times.h>
+#include<stdio.h>
+#include<stdlib.h>
+int main(void)
+{
+int i, status;
+pid_t pid;
+time_t currentTime;
+struct tms cpuTime;
+if((pid = fork())==-1) //start child process
+{
+perror("\nfork error");
+exit(EXIT_FAILURE);
+}
+else if(pid==0) //child process
+{
+time(&currentTime);
+printf("\nChild process started at %s",ctime(&currentTime));
+for(i=0;i<5;i++)
+{
+printf("\nCounting= %dn",i); //count for 5 seconds
+sleep(1);
+}
+time(&currentTime);
+printf("\nChild process ended at %s",ctime(&currentTime));
+exit(EXIT_SUCCESS);
+}
+else
+{ //Parent process
+time(&currentTime); // gives normal time
+printf("\nParent process started at %s ",ctime(&currentTime));
+if(wait(&status)== -1) //wait for child process
+perror("\n wait error");
+if(WIFEXITED(status))
+printf("\nChild process ended normally");
+else
+printf("\nChild process did not end normally");
+if(times(&cpuTime)<0) //Get process time
+perror("\nTimes error");
+else
+{ // _SC_CLK_TCK: system configuration time: seconds clock tick
+printf("\nParent process user time= %fn",((double)
+cpuTime.tms_utime));
+printf("\nParent process system time = %fn",((double)
+cpuTime.tms_stime));
+printf("\nChild process user time = %fn",((double)
+cpuTime.tms_cutime));
+printf("\nChild process system time = %fn",((double)
+cpuTime.tms_cstime));
+}
+time(&currentTime);
+printf("\nParent process ended at %s",ctime(&currentTime));
+exit(EXIT_SUCCESS);
+}
+}
+

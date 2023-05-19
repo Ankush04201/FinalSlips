@@ -1,0 +1,186 @@
+Slip 9
+A) Write a Swift program that accept two integer values and return true if one of them is 20 or if their sum is 20.
+func checkIfSumIs20(_ a: Int, _ b: Int) -> Bool {
+    if a == 20 || b == 20 || a + b == 20 {
+        return true
+    }
+    return false
+}
+// Example usage
+print(checkIfSumIs20(10, 20)) // true
+print(checkIfSumIs20(15, 5)) // true
+print(checkIfSumIs20(10, 5)) // false
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+B) Write an Android Application to demonstrate Alert Dialog Box.
+Activitymain.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".MainActivity">
+<Button
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:id="@+id/button"
+android:text="Close app"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintLeft_toLeftOf="parent"
+app:layout_constraintRight_toRightOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+</LinearLayout>
+Mainactivity.java
+package com.example.myalert_dialouge_box;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+public class MainActivity extends AppCompatActivity {
+Button closeButton;
+AlertDialog.Builder builder;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+closeButton = (Button) findViewById(R.id.button);
+builder = new AlertDialog.Builder(this);
+closeButton.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+builder.setMessage(R.string.dialog_message)
+.setTitle(R.string.dialog_title);
+builder.setMessage("Do you want to close this application ?")
+.setCancelable(false)
+.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+public void onClick(DialogInterface dialog, int id) {
+finish();
+Toast.makeText(getApplicationContext(),"you choose yes action
+for alertbox",
+Toast.LENGTH_SHORT).show();
+}
+})
+.setNegativeButton("No", new DialogInterface.OnClickListener() {
+public void onClick(DialogInterface dialog, int id) {
+dialog.cancel();
+Toast.makeText(getApplicationContext(),"you choose no action
+for alertbox",
+Toast.LENGTH_SHORT).show();
+}
+});
+AlertDialog alert = builder.create();
+alert.setTitle("AlertDialogExample");
+alert.show();
+}
+});
+}
+}
+String.xml
+<resources>
+<string name="app_name">My ALert_Dialouge_Box</string>
+<string name="dialog_message">Welcome to Alert Dialog</string>
+<string name="dialog_title">Javatpoint Alert Dialog</string>
+</resources>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+A) Write a C program to display as well as resets the environment variable such as path, home, root etc.
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int main() {
+    char* env_var = getenv("PATH"); // Replace PATH with the environment variable you want to access
+    if (env_var == NULL) {
+        printf("Environment variable not found!\n");
+        return 1;
+    }
+    printf("Current value of the environment variable: %s\n", env_var);
+    // Reset the environment variable to a new value
+    char new_value[] = "/usr/bin:/usr/local/bin";
+    if (setenv("PATH", new_value, 1) != 0) { // Replace PATH with the environment variable you want to reset
+        printf("Failed to reset environment variable!\n");
+        return 1;
+    }
+    // Display the new value of the environment variable
+    env_var = getenv("PATH"); // Replace PATH with the environment variable you want to access
+    printf("New value of the environment variable: %s\n", env_var);
+    return 0;
+}
+
+
+
+
+
+
+
+
+B) Write a C program that will only list all subdirectories in alphabetical order from current directory.
+#include <stdio.h>
+#include <stdlib.h>
+#include <dirent.h>
+int
+main(void)
+{
+struct dirent **namelist;
+int n;
+int i=0;
+n = scandir(".", &namelist, 0, alphasort);
+if (n < 0)
+perror("scandir");
+else {
+while (i<n) {
+printf("%s\n", namelist[i]->d_name);
+free(namelist[i]);
+i++;
+}
+free(namelist);
+}
+}
+
+
+
+
+
+
+

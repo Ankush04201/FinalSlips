@@ -1,0 +1,252 @@
+Slip 5
+A) Write an Android Program to Change the Image Displayed on the Screen
+Activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".MainActivity">
+<ImageSwitcher
+android:layout_width="match_parent"
+android:layout_height="500dp"
+android:id="@+id/is"
+tools:ignore="MissingConstraints" />
+<Button
+android:id="@+id/bt"
+android:layout_width="100dp"
+android:layout_height="75dp"
+android:text="img slider"/>
+</LinearLayout>
+MainActivity.java
+package com.example.myimage_switcher;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+import android.widget.ViewSwitcher;
+public class MainActivity extends AppCompatActivity {
+private ImageSwitcher is;
+int imgs[]={R.drawable.img, R.drawable.img_1,R.drawable.img_2};
+int cnt=imgs.length;
+int currindex=-1;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+ImageSwitcher is=(ImageSwitcher) findViewById(R.id.is);
+Button bt=(Button) findViewById(R.id.bt);
+is.setFactory(new ViewSwitcher.ViewFactory() {
+@Override
+public View makeView() {
+ImageView iv=new ImageView(getApplicationContext());
+iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
+iv.setLayoutParams(new
+ImageSwitcher.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+LinearLayout.LayoutParams.WRAP_CONTENT));
+return iv;
+}
+});
+Animation in=
+AnimationUtils.loadAnimation(this,android.R.anim.slide_in_left);
+Animation out=
+AnimationUtils.loadAnimation(this,android.R.anim.slide_out_right);
+is.setInAnimation(in);
+is.setInAnimation(out);
+bt.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View view) {
+currindex++;
+if(currindex==cnt)
+currindex=0;
+is.setImageResource(imgs[currindex]);
+}
+});
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+B)Write an IOS application that toggles a light bulb on and off when the user clicks on switch button
+ViewController.swift
+import UIKit
+class ViewController: UIViewController {
+    @IBOutlet weak var lightBulbImageView: UIImageView!
+    @IBOutlet weak var switchButton: UISwitch!
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Set the initial state of the switch and the light bulb
+        switchButton.isOn = false
+        lightBulbImageView.image = UIImage(named: "light-bulb-off")
+    }
+    @IBAction func switchButtonValueChanged(_ sender: Any) {
+        if switchButton.isOn {
+            lightBulbImageView.image = UIImage(named: "light-bulb-on")
+        } else {
+            lightBulbImageView.image = UIImage(named: "light-bulb-off")
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+A) Write a C program to create an unnamed pipe. The child process will write following three messages to pipe and parent process display it.
+Message1 = “Hello World”
+Message2 = “Hello SPPU”
+Message3 = “Linux is Funny”
+#include<stdio.h>
+#include<unistd.h>
+int main() {
+int pipefds[2];
+int returnstatus;
+char writemessages[3][20]={"Hello World", "Hello SPPU","Linux is Funny"};
+char readmessage[20];
+returnstatus = pipe(pipefds);
+if (returnstatus == -1) {
+printf("Unable to create pipe\n");
+return 1;
+}
+int child = fork();
+if(child==0){
+printf("Child is Writing to pipe - Message 1 is %s\n", writemessages[0]);
+write(pipefds[1], writemessages[0], sizeof(writemessages[0]));
+printf("Child is Writing to pipe - Message 2 is %s\n", writemessages[1]);
+write(pipefds[1], writemessages[1], sizeof(writemessages[1]));
+printf("Child is Writing to pipe - Message 3 is %s\n", writemessages[2]);
+write(pipefds[1], writemessages[2], sizeof(writemessages[2]));
+}
+else
+{
+read(pipefds[0], readmessage, sizeof(readmessage));
+printf("Parent Process is Reading from pipe – Message 1 is %s\n",
+readmessage);
+read(pipefds[0], readmessage, sizeof(readmessage));
+printf("Parent Process is Reading from pipe – Message 2 is %s\n",
+readmessage);
+read(pipefds[0], readmessage, sizeof(readmessage));
+printf("Parent Process is Reading from pipe – Message 3 is %s\n",
+readmessage);
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+B)Write a C program to read all txt files (that is files that ends with .txt) in the current directory and merge them all to one txt file and returns a file descriptor for the new file
+#include <stdio.h>
+#include <dirent.h>
+#include <string.h>
+int main() {
+    DIR *dir;
+    struct dirent *entry;
+    FILE *outfile;
+    char filename[256];
+    char buffer[1024];
+    int n;
+    // Open the current directory
+    dir = opendir(".");
+    if (dir == NULL) {
+        printf("Error opening directory\n");
+        return 1;
+    }
+    // Open the output file
+    outfile = fopen("output.txt", "w");
+    if (outfile == NULL) {
+        printf("Error creating output file\n");
+        closedir(dir);
+        return 1;
+    }
+    // Loop through all files in the directory
+    while ((entry = readdir(dir)) != NULL) {
+        // Check if the file ends with .txt
+        if (strstr(entry->d_name, ".txt") != NULL) {
+            // Open the file
+            sprintf(filename, "%s", entry->d_name);
+            FILE *infile = fopen(filename, "r");
+            if (infile == NULL) {
+                printf("Error opening input file %s\n", filename);
+                fclose(outfile);
+                closedir(dir);
+                return 1;
+            }
+            // Copy the contents of the file to the output file
+            while ((n = fread(buffer, 1, sizeof(buffer), infile)) > 0) {
+                fwrite(buffer, 1, n, outfile);
+            }
+            // Close the input file
+            fclose(infile);
+        }
+    }
+    // Close the output file and the directory
+    fclose(outfile);
+    closedir(dir);
+    // Open the output file again and return the file descriptor
+    outfile = fopen("output.txt", "r");
+    if (outfile == NULL) {
+        printf("Error opening output file\n");
+        return 1;
+    }
+    return fileno(outfile);
+}
+
+
+
+
+
